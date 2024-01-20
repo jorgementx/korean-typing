@@ -2,7 +2,6 @@
 import { useState, useRef } from "react";
 import Keyboard from "react-simple-keyboard";
 import jplayout from "simple-keyboard-layouts/build/layouts/japanese";
-import krlayout from "simple-keyboard-layouts/build/layouts/korean";
 import eslayout from "simple-keyboard-layouts/build/layouts/spanish";
 import enlayout from "simple-keyboard-layouts/build/layouts/english";
 import { getRandomInt } from "@/lib/utils";
@@ -17,14 +16,15 @@ import {
 } from "@/components/ui/select";
 import "./keyboardTest.css";
 
-function KeyboardTest({wordList}) {
+function KeyboardTest({ wordList }) {
   const [input, setInput] = useState("");
   const [layout, setLayout] = useState("default");
   const [mode, setMode] = useState("rndLetters");
+  // const [theme, setTheme] = useState("default");
   const keyboard = useRef();
-  // const [words, setWords] = useState(getWordsList("korean", 200));
-  //get a random word from the list
+  // const [currentWord, setCurrentWord] = useState(wordList[getRandomInt(wordList.length)]);
   const [currentWord, setCurrentWord] = useState(wordList[getRandomInt(wordList.length)]);
+  const [nextLetter, setNextLetter] = useState(currentWord[0]);
 
   const handleShift = () => {
     const newLayoutName = layout === "default" ? "shift" : "default";
@@ -39,6 +39,7 @@ function KeyboardTest({wordList}) {
     const input = event.target.value;
     setInput(input);
     keyboard.current.setInput(input);
+    setNextLetter(currentWord[input.length]);
   };
 
   const handleModeChange = (value) => {
@@ -98,7 +99,7 @@ function KeyboardTest({wordList}) {
               "~ ! @ # $ % ^ & * ( ) _ + {bksp}",
               "{tab} ㅃ ㅉ ㄸ ㄲ ㅆ ㅛ ㅕ ㅑ ㅒ ㅖ { } |",
               '{lock} ㅁ ㄴ ㅇ ㄹ ㅎ ㅗ ㅓ ㅏ ㅣ : " {enter}',
-              "{shift} ㅋ ㅌ ㅊ ㅍ ㅠ ㅜ ㅡ < > ? {shift}",
+              "{Shift} ㅋ ㅌ ㅊ ㅍ ㅠ ㅜ ㅡ < > ? {shift}",
               ".com @ {space}",
             ],
           },
@@ -112,7 +113,7 @@ function KeyboardTest({wordList}) {
     }
   };
 
-  const handleSpacePress = (e) => {
+  const handleKeyUp = (e) => {
     if (e.key === " ") {
       switch (mode) {
         case "rndLetters":
@@ -133,12 +134,21 @@ function KeyboardTest({wordList}) {
           break;
       }
     }
-  }
+    if (e.key === "Shift") {
+      setLayout("default");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Shift") {
+      setLayout("shift");
+    }
+  };
 
   return (
     <>
       <div className="w-full max-w-4xl mx-auto">
-        <h1 className="text-primary-content text-5xl mb-10 font-thin mx-auto w-fit">
+        <h1 className="text-5xl mb-10 font-thin mx-auto w-fit">
           {currentWord}
         </h1>
         <input
@@ -149,10 +159,11 @@ function KeyboardTest({wordList}) {
             backgroundSize: "40%",
           }}
           className={
-            "w-full h-7 p-8 text-lg border-none box-border rounded-md mb-2 outline-none focus:outline-rose-300 "
+            "w-full px-8 py-4 text-4xl font-semibold border-none  rounded-md mb-2 outline-none focus:outline-rose-300 "
           }
           value={input}
-          onKeyUp={handleSpacePress}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
           placeholder={"Start typing..."}
           onChange={onChangeInput}
         />
@@ -169,6 +180,10 @@ function KeyboardTest({wordList}) {
             {
               class: "accent-key",
               buttons: "{shift} {backspace} {tab} @ {bksp} .com {lock} {enter}",
+            },
+            {
+              class: "highlight-key",
+              buttons: nextLetter,
             },
           ]}
         />

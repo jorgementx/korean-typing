@@ -3,9 +3,14 @@
 } */
 
 .simple-keyboard.hg-layout-default .hg-button.accent-key {
-  @apply bg-rose-200 text-rose-500 ;
+  @apply bg-rose-200 text-rose-500;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.highlight-key {
+  filter: drop-shadow(0 0px 20px rgb(251, 255, 122));
+  /* @apply shadow-purple-400; */
 }
 
 .simple-keyboard.hg-theme-default.sakuraTheme {
-  @apply bg-rose-300 text-rose-500;
+  @apply bg-rose-300 text-rose-500 glass;
 }

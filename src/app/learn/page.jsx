@@ -1,12 +1,16 @@
 import KeyboardTest from "@/components/KeyboardTest";
-const { getWordsList } = require('most-common-words-by-language');
+import wordlist from "@/assets/wordlists/ko"
+import animebg from "@/assets/animebg.webp"
+import pixelanimation from "@/assets/pixelanimation.webp"
 
 function LearnPage() {
-  const wordList2 = ['no', 'pero', 'parece', 'que', 'esto', 'funcione']
   return (
-    <section className="w-screen h-screen flex flex-col justify-center">
-      {/* selector de layout */}
-      <KeyboardTest wordList={wordList2} />
+    <section className="w-screen h-screen flex flex-col justify-center" style={{
+      backgroundImage: `url(${pixelanimation.src})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "top right",
+    }}>
+      <KeyboardTest wordList={wordlist} />
     </section>
   );
 }
