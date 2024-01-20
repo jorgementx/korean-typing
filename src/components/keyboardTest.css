@@ -1,0 +1,11 @@
+/* .simple-keyboard {
+  @apply w-40;
+} */
+
+.simple-keyboard.hg-layout-default .hg-button.accent-key {
+  @apply bg-rose-200 text-rose-500 ;
+}
+
+.simple-keyboard.hg-theme-default.sakuraTheme {
+  @apply bg-rose-300 text-rose-500;
+}
